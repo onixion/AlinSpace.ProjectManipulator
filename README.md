@@ -1,6 +1,4 @@
 # AlinSpace.DotNetProject
-[![NuGet version (AlinSpace.Exceptions)](https://img.shields.io/nuget/v/AlinSpace.Exceptions.svg?style=flat-square)](https://www.nuget.org/packages/AlinSpace.Exceptions/)
-
 .NET project file manipulator.
 
 ## Why?
