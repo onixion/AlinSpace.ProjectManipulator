@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace AlinSpace.ProjectManipulator.Tests.Test01
@@ -10,13 +11,16 @@ namespace AlinSpace.ProjectManipulator.Tests.Test01
         {
             var project = Project.Open("Test01/Input.txt");
 
-            project.SetDependencyVersion("Polly", new Version(5, 6, 7));
+            var dependencies = project.GetDependencies();
+
+            dependencies.First().Version = new Version(5, 6, 7);
 
             project.Save();
 
             project = Project.Open("Test01/Input.txt");
-            var version = project.GetDependencyVersion("Polly");
+            dependencies = project.GetDependencies();
 
+            var version = dependencies.First().Version;
             Assert.Equal(5, version.Major);
             Assert.Equal(6, version.Minor);
             Assert.Equal(7, version.Build);

@@ -71,11 +71,55 @@ namespace AlinSpace.ProjectManipulator
 
         public ProjectType Type { get; private set; }
 
-        public bool GeneratePackageOnBuild { get; set; }
+        public bool GeneratePackageOnBuild
+        {
+            get => generatePackageOnBuild;
+            set
+            {
+                generatePackageOnBuildNode.InnerText = value ? "true" : "false";
+                generatePackageOnBuild = value;
+            }
+        }
+        bool generatePackageOnBuild;
+
+        public IEnumerable<IDependency> GetDependencies()
+        {
+            foreach (var node in projectNode.GetNodes("ItemGroup/PackageReference"))
+            {
+                yield return new DependencyHandler(node);
+            }
+        }
+
+        public IProject SetDependency(string name, Version version)
+        {
+            var dependency = this
+                .GetDependencies()
+                .FirstOrDefault(x => x.Name == name);
+
+            if (dependency != null)
+            {
+                dependency.Version = version;
+            }
+            else
+            {
+                // todo
+            }
+
+            return this;
+        }
 
         #region Version
 
-        public Version Version { get; set; }
+        public Version Version
+        {
+            get => version;
+            set
+            {
+                versionNode.InnerText = value?.ToString();
+                version = value;
+            }
+        }
+        private Version version;
 
         public IProject VersionIncrementMajor()
         {
@@ -124,64 +168,10 @@ namespace AlinSpace.ProjectManipulator
             versionNode.InnerText = Version.ToString();
         }
 
-        public IProject SetDependencyVersion(string dependency, Version version)
-        {
-            foreach(var node in projectNode.GetNodes("ItemGroup/PackageReference"))
-            {
-                var includeAttribute = node
-                    .GetAttributes()
-                    .FirstOrDefault(x => x.Name == "Include" && x.Value == dependency);
-
-                if (includeAttribute == null)
-                    continue;
-
-                var versionAttribute = node
-                     .GetAttributes()
-                     .FirstOrDefault(x => x.Name == "Version");
-
-                if (versionAttribute == null)
-                    continue;
-
-                //var parsedVersion = Version.Parse(versionAttribute.Value);
-
-                versionAttribute.Value = version.ToString();
-                break;
-            }
-
-            return this;
-        }
-
-        public Version GetDependencyVersion(string dependency)
-        {
-            foreach (var node in projectNode.GetNodes("ItemGroup/PackageReference"))
-            {
-                var includeAttribute = node
-                    .GetAttributes()
-                    .FirstOrDefault(x => x.Name == "Include" && x.Value == dependency);
-
-                if (includeAttribute == null)
-                    continue;
-
-                var versionAttribute = node
-                     .GetAttributes()
-                     .FirstOrDefault(x => x.Name == "Version");
-
-                if (versionAttribute == null)
-                    continue;
-
-                return Version.Parse(versionAttribute.Value);
-            }
-
-            return null;
-        }
-
         #endregion
 
         public void Save()
         {
-            versionNode.InnerText = Version.ToString();
-            generatePackageOnBuildNode.InnerText = GeneratePackageOnBuild ? "true" : "false";
-
             document.Save(file);
         }
     }

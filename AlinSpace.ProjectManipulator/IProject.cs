@@ -16,9 +16,9 @@
 
         IProject VersionIncrementBuild();
 
-        IProject SetDependencyVersion(string dependency, Version version);
+        IEnumerable<IDependency> GetDependencies();
 
-        Version GetDependencyVersion(string dependency);
+        IProject SetDependency(string name, Version version);
 
         void Save();
     }
