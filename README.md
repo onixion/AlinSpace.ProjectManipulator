@@ -1,4 +1,4 @@
-# AlinSpace.DotNetProject
+# AlinSpace.ProjectManipulator
 .NET project file manipulator.
 
 ## Why?
