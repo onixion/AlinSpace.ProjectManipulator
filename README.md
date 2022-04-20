@@ -17,6 +17,6 @@ project.Save();
 
 ```csharp
 var project = Project.Open("MyProject.csproj");
-project.SetDependencyVersion(new Version(5, 0, 0));
+project.SetDependencyVersion("AutoMapper", new Version(11, 0, 0));
 project.Save();
 ```
