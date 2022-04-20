@@ -3,15 +3,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>Test</PackageId>
-    <Version>1.1.5</Version>
-    <Authors>Authors</Authors>
-    <Company>Company</Company>
-    <Product>Product</Product>
-    <Description>Descr</Description>
-    <Copyright>Copyright</Copyright>
+    <Version>1.2.3</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Polly" Version="5.6.7" />
+    <PackageReference Include="Polly" Version="7.2.3" />
   </ItemGroup>
 </Project>

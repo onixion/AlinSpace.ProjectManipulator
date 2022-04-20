@@ -39,30 +39,20 @@ namespace AlinSpace.ProjectManipulator
             #region Version
 
             versionNode = propertyGroupNode.SelectSingleNode("Version");
-            if (versionNode == null)
+            if (versionNode != null)
             {
-                versionNode = document.CreateElement("Version");
-                versionNode.InnerText = new Version(0, 0, 0).ToString();
-            
-                propertyGroupNode.AppendChild(versionNode);
+                Version = Version.Parse(versionNode.InnerText);
             }
-
-            Version = Version.Parse(versionNode.InnerText);
 
             #endregion
 
             #region GeneratePackageOnBuild
 
             generatePackageOnBuildNode = propertyGroupNode.SelectSingleNode("GeneratePackageOnBuild");
-            if (generatePackageOnBuildNode == null)
+            if (generatePackageOnBuildNode != null)
             {
-                generatePackageOnBuildNode = document.CreateElement("GeneratePackageOnBuild");
-                generatePackageOnBuildNode.InnerText = "false";
-
-                propertyGroupNode.AppendChild(generatePackageOnBuildNode);
+                GeneratePackageOnBuild = Convert.ToBoolean(generatePackageOnBuildNode.InnerText);
             }
-
-            GeneratePackageOnBuild = Convert.ToBoolean(generatePackageOnBuildNode.InnerText);
 
             #endregion
         }
@@ -71,42 +61,39 @@ namespace AlinSpace.ProjectManipulator
 
         public ProjectType Type { get; private set; }
 
-        public bool GeneratePackageOnBuild
+        public bool? GeneratePackageOnBuild
         {
             get => generatePackageOnBuild;
             set
             {
-                generatePackageOnBuildNode.InnerText = value ? "true" : "false";
-                generatePackageOnBuild = value;
+                if (value == null)
+                {
+                    var node = propertyGroupNode
+                        .GetNodes()
+                        .FirstOrDefault(x => x.Name == "GeneratePackageOnBuild");
+
+                    if (node != null)
+                    {
+                        propertyGroupNode.RemoveChild(node);
+                    }
+
+                    return;
+                }
+                else
+                {
+
+                    if (generatePackageOnBuildNode == null)
+                    {
+                        generatePackageOnBuildNode = document.CreateElement("GeneratePackageOnBuild");
+                        propertyGroupNode.AppendChild(generatePackageOnBuildNode);
+                    }
+
+                    generatePackageOnBuildNode.InnerText = value.Value ? "true" : "false";
+                    generatePackageOnBuild = value.Value;
+                }
             }
         }
         bool generatePackageOnBuild;
-
-        public IEnumerable<IDependency> GetDependencies()
-        {
-            foreach (var node in projectNode.GetNodes("ItemGroup/PackageReference"))
-            {
-                yield return new DependencyHandler(node);
-            }
-        }
-
-        public IProject SetDependency(string name, Version version)
-        {
-            var dependency = this
-                .GetDependencies()
-                .FirstOrDefault(x => x.Name == name);
-
-            if (dependency != null)
-            {
-                dependency.Version = version;
-            }
-            else
-            {
-                // todo
-            }
-
-            return this;
-        }
 
         #region Version
 
@@ -115,8 +102,31 @@ namespace AlinSpace.ProjectManipulator
             get => version;
             set
             {
-                versionNode.InnerText = value?.ToString();
-                version = value;
+                if (value == null)
+                {
+                    var node = propertyGroupNode
+                        .GetNodes()
+                        .FirstOrDefault(x => x.Name == "Version");
+
+                    if (node != null)
+                    {
+                        propertyGroupNode.RemoveChild(node);
+                    }
+
+                    return;
+                }
+                else
+                {
+
+                    if (versionNode == null)
+                    {
+                        versionNode = document.CreateElement("Version");
+                        propertyGroupNode.AppendChild(versionNode);
+                    }
+
+                    versionNode.InnerText = value?.ToString();
+                    version = value;
+                }
             }
         }
         private Version version;
@@ -166,6 +176,86 @@ namespace AlinSpace.ProjectManipulator
             }
 
             versionNode.InnerText = Version.ToString();
+        }
+
+        #endregion
+
+        #region Dependencies
+
+        public IProject AddOrUpdateDependency(string name, Version version)
+        {
+            var dependency = this
+                .GetDependencies()
+                .FirstOrDefault(x => x.Name == name);
+
+            if (dependency != null)
+            {
+                dependency.Version = version;
+            }
+            else
+            {
+                var itemGroup = projectNode
+                    .GetNodes()
+                    .FirstOrDefault(x => x.Name == "ItemGroup");
+
+                if (itemGroup == null)
+                {
+                    itemGroup = document.CreateElement("ItemGroup");
+                    projectNode.AppendChild(itemGroup);
+                }
+
+                var packageReferenceNode = document.CreateElement("PackageReference");
+                itemGroup.AppendChild(packageReferenceNode);
+
+                #region Include
+
+                var includeAttribute = document.CreateAttribute("Include");
+                includeAttribute.Value = name;
+
+                packageReferenceNode.Attributes.Append(includeAttribute);
+
+                #endregion
+
+                #region Version
+
+                var versionAttribute = document.CreateAttribute("Version");
+                versionAttribute.Value = version.ToString();
+
+                packageReferenceNode.Attributes.Append(versionAttribute);
+
+                #endregion
+            }
+
+            return this;
+        }
+
+        public IEnumerable<IDependency> GetDependencies()
+        {
+            foreach (var itemGroupNode in projectNode.GetNodes("ItemGroup"))
+            {
+                foreach(var packageReferenceNode in itemGroupNode.GetNodes("PackageReference"))
+                {
+                    yield return new DependencyHandler(itemGroupNode, packageReferenceNode);
+                }
+            }
+        }
+
+        public IProject SetDependency(string name, Version version)
+        {
+            var dependency = this
+                .GetDependencies()
+                .FirstOrDefault(x => x.Name == name);
+
+            if (dependency != null)
+            {
+                dependency.Version = version;
+            }
+            else
+            {
+                // todo
+            }
+
+            return this;
         }
 
         #endregion

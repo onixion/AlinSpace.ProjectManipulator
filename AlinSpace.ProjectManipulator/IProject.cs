@@ -2,13 +2,15 @@
 {
     public interface IProject
     {
-        public string Name { get; }
+        string Name { get; }
 
-        public ProjectType Type { get; }
+        ProjectType Type { get; }
 
-        bool GeneratePackageOnBuild { get; set; }
+        bool? GeneratePackageOnBuild { get; set; }
 
-        public Version Version { get; set; }
+        #region Version
+
+        Version Version { get; set; }
 
         IProject VersionIncrementMajor();
         
@@ -16,9 +18,15 @@
 
         IProject VersionIncrementBuild();
 
-        IEnumerable<IDependency> GetDependencies();
+        #endregion
 
-        IProject SetDependency(string name, Version version);
+        #region Dependencies
+
+        IProject AddOrUpdateDependency(string name, Version version);
+
+        IEnumerable<IDependency> GetDependencies();
+        
+        #endregion
 
         void Save();
     }

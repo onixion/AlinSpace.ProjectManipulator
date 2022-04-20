@@ -1,29 +1,24 @@
 using System;
-using System.Linq;
+using System.IO;
 using Xunit;
 
 namespace AlinSpace.ProjectManipulator.Tests.Test01
 {
+    /// <summary>
+    /// Sets version.
+    /// </summary>
     public class Test
     {
         [Fact]
         public void Perform()
         {
             var project = Project.Open("Test01/Input.txt");
-
-            var dependencies = project.GetDependencies();
-
-            dependencies.First().Version = new Version(5, 6, 7);
-
+            project.Version = new Version(1, 2, 3);
             project.Save();
 
-            project = Project.Open("Test01/Input.txt");
-            dependencies = project.GetDependencies();
-
-            var version = dependencies.First().Version;
-            Assert.Equal(5, version.Major);
-            Assert.Equal(6, version.Minor);
-            Assert.Equal(7, version.Build);
+            Assert.Equal(
+                expected: File.ReadAllText("Test01/Expected.txt"),
+                actual: File.ReadAllText("Test01/Input.txt"));
         }
     }
 }

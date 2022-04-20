@@ -5,6 +5,20 @@ namespace AlinSpace.ProjectManipulator
     public static class XmlNodeExtensions
     {
         public static IEnumerable<XmlNode> GetNodes(
+           this XmlNode node)
+        {
+            foreach (var n in node.ChildNodes)
+            {
+                var t = n as XmlNode;
+
+                if (t == null)
+                    continue;
+
+                yield return t;
+            }
+        }
+
+        public static IEnumerable<XmlNode> GetNodes(
             this XmlNode node, 
             string xpath)
         {

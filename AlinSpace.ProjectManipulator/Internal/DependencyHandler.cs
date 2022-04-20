@@ -4,12 +4,18 @@ namespace AlinSpace.ProjectManipulator
 {
     internal class DependencyHandler : IDependency
     {
+        private readonly XmlNode parentNode;
         private readonly XmlNode dependencyNode;
         private readonly XmlAttribute includeAttribute;
         private readonly XmlAttribute versionAttribute;
 
-        public DependencyHandler(XmlNode dependencyNode)
+        private bool removed;
+
+        public DependencyHandler(
+            XmlNode parentNode,
+            XmlNode dependencyNode)
         {
+            this.parentNode = parentNode;
             this.dependencyNode = dependencyNode;
 
             includeAttribute = dependencyNode
@@ -25,11 +31,22 @@ namespace AlinSpace.ProjectManipulator
             version = Version.Parse(versionAttribute.InnerText);
         }
 
+        void ThrowIfRemoved()
+        {
+            if (removed)
+                throw new InvalidOperationException("Dependency has been removed.");
+        }
+
         public string Name
         {
-            get => name;
+            get
+            {
+                ThrowIfRemoved();
+                return name;
+            }
             set
             {
+                ThrowIfRemoved();
                 includeAttribute.Value = value;
                 name = value;
             }
@@ -38,13 +55,32 @@ namespace AlinSpace.ProjectManipulator
 
         public Version Version
         {
-            get => version;
+            get
+            {
+                ThrowIfRemoved();
+                return version;
+            }
             set
             {
+                ThrowIfRemoved();
                 versionAttribute.Value = value?.ToString();
                 version = value;
             }
         }
         private Version version;
+
+        public void Remove()
+        {
+            ThrowIfRemoved();
+
+            parentNode.RemoveChild(dependencyNode);
+        
+            if (parentNode.ChildNodes.Count == 0)
+            {
+                parentNode.ParentNode.RemoveChild(parentNode);
+            }
+
+            removed = true;
+        }
     }
 }
