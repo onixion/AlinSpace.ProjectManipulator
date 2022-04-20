@@ -1,3 +1,5 @@
+<img src="https://github.com/onixion/AlinSpace.ProjectManipulator/blob/main/Assets/Icon.png" width="200" height="200">
+
 # AlinSpace.ProjectManipulator
 .NET project file manipulator.
 
