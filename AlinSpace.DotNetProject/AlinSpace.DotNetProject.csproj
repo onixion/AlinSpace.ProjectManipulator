@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>Alin Andersen</Authors>
+    <PackageProjectUrl>https://github.com/onixion/AlinSpace.DotNetProject</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/onixion/AlinSpace.DotNetProject</RepositoryUrl>
+    <Description>.NET project file manipulator.</Description>
+    <Copyright>© 2022 Alin Andersen</Copyright>
+  </PropertyGroup>
+
+</Project>
