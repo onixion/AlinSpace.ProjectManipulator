@@ -7,8 +7,8 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>1.0.0</Version>
     <Authors>Alin Andersen</Authors>
-    <PackageProjectUrl>https://github.com/onixion/AlinSpace.DotNetProject</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/onixion/AlinSpace.DotNetProject</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/onixion/AlinSpace.ProjectManipulator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/onixion/AlinSpace.ProjectManipulator</RepositoryUrl>
     <Description>.NET project file manipulator.</Description>
     <Copyright>© 2022 Alin Andersen</Copyright>
   </PropertyGroup>

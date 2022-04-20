@@ -1,4 +1,4 @@
-﻿namespace AlinSpace.DotNetProject
+﻿namespace AlinSpace.ProjectManipulator
 {
     public enum ProjectType
     {

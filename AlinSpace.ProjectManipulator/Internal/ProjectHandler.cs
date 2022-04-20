@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace AlinSpace.DotNetProject
+namespace AlinSpace.ProjectManipulator
 {
     internal class ProjectHandler : IProject
     {

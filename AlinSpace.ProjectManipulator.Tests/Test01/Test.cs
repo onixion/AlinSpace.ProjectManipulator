@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace AlinSpace.DotNetProject.Tests.Test01
+namespace AlinSpace.ProjectManipulator.Tests.Test01
 {
     public class Test
     {
