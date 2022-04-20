@@ -7,6 +7,8 @@
 
 When you manage a lot of nuget packages with complex dependency trees, you **need** a library to interact with the project files.
 
+This library is mostly used to update version numbers of project dependencies.
+
 ## Example - Increment major version number
 
 ```csharp
