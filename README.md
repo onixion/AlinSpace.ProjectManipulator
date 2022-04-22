@@ -3,6 +3,8 @@
 # AlinSpace.ProjectManipulator
 .NET project file manipulator.
 
+[Nuget](https://www.nuget.org/packages/AlinSpace.ProjectManipulator/1.0.2)
+
 ## Why?
 
 When you manage a lot of nuget packages with complex dependency trees, you **need** a library to interact with the project files.
@@ -38,4 +40,19 @@ dependency.Version = new Version(11, 0, 0));
 
 // Save.
 project.Save();
+```
+
+## Example - Get projects from a solution file
+
+Note: Solution files can only be read.
+
+```csharp
+// Read solution.
+var solution = Solution.Read("MySolution.sln");
+
+// Access projects.
+var project = solution.Projects.First();
+
+var name = project.Name;
+var path = project.PathToProjectFile;
 ```
