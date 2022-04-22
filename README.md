@@ -3,6 +3,8 @@
 # AlinSpace.ProjectManipulator
 .NET project file manipulator.
 
+[Nuget](https://www.nuget.org/packages/AlinSpace.ProjectManipulator/1.0.2)
+
 ## Why?
 
 When you manage a lot of nuget packages with complex dependency trees, you **need** a library to interact with the project files.
