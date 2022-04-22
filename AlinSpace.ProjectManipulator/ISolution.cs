@@ -1,4 +1,6 @@
-﻿namespace AlinSpace.ProjectManipulator
+﻿using System.Collections.Generic;
+
+namespace AlinSpace.ProjectManipulator
 {
     public interface ISolution
     {

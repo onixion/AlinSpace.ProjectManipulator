@@ -1,4 +1,6 @@
-﻿namespace AlinSpace.ProjectManipulator
+﻿using System;
+
+namespace AlinSpace.ProjectManipulator
 {
     public interface IDependency
     {

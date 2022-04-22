@@ -1,10 +1,13 @@
-﻿using System.Xml;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
 
 namespace AlinSpace.ProjectManipulator
 {
     internal class ProjectHandler : IProject
     {
-        private string file;
         private XmlDocument document;
 
         private XmlNode projectNode;
@@ -13,15 +16,16 @@ namespace AlinSpace.ProjectManipulator
         private XmlNode versionNode;
         private XmlNode generatePackageOnBuildNode;
 
-        public static IProject Open(string file)
+        public ProjectHandler(string pathToProjectFile)
         {
-            var project = new ProjectHandler();
+            PathToProjectFile = AbsolutePath.Get(pathToProjectFile);
+            Name = Path.GetFileNameWithoutExtension(pathToProjectFile);
+            document = new XmlDocument();
+        }
 
-            var document = new XmlDocument();
-            
-            project.file = file;
-            project.document = document;
-
+        public static IProject Open(string pathToProjectFile)
+        {
+            var project = new ProjectHandler(pathToProjectFile);
             project.Init();
 
             return project;
@@ -29,9 +33,7 @@ namespace AlinSpace.ProjectManipulator
 
         private void Init()
         {
-            Name = Path.GetFileNameWithoutExtension(file);
-
-            document.Load(file);
+            document.Load(PathToProjectFile);
 
             projectNode = document.SelectSingleNode("/Project");
             propertyGroupNode = projectNode.SelectSingleNode("PropertyGroup");
@@ -57,6 +59,8 @@ namespace AlinSpace.ProjectManipulator
             #endregion
         }
 
+        public string PathToProjectFile { get; private set; }
+
         public string Name { get; private set; }
 
         public ProjectType Type { get; private set; }
@@ -81,7 +85,6 @@ namespace AlinSpace.ProjectManipulator
                 }
                 else
                 {
-
                     if (generatePackageOnBuildNode == null)
                     {
                         generatePackageOnBuildNode = document.CreateElement("GeneratePackageOnBuild");
@@ -117,7 +120,6 @@ namespace AlinSpace.ProjectManipulator
                 }
                 else
                 {
-
                     if (versionNode == null)
                     {
                         versionNode = document.CreateElement("Version");
@@ -131,8 +133,18 @@ namespace AlinSpace.ProjectManipulator
         }
         private Version version;
 
+        void CheckSetVersion()
+        {
+            if (Version == null)
+            {
+                Version = new Version(0, 0, 0);
+            }
+        }
+
         public IProject VersionIncrementMajor()
         {
+            CheckSetVersion();
+
             Version = new Version(
                 Version.Major + 1,
                 Version.Minor,
@@ -145,6 +157,8 @@ namespace AlinSpace.ProjectManipulator
 
         public IProject VersionIncrementMinor()
         {
+            CheckSetVersion();
+
             Version = new Version(
                 Version.Major,
                 Version.Minor + 1,
@@ -157,6 +171,8 @@ namespace AlinSpace.ProjectManipulator
 
         public IProject VersionIncrementBuild()
         {
+            CheckSetVersion();
+
             Version = new Version(
                 Version.Major,
                 Version.Minor,
@@ -262,7 +278,7 @@ namespace AlinSpace.ProjectManipulator
 
         public void Save()
         {
-            document.Save(file);
+            document.Save(PathToProjectFile);
         }
     }
 }

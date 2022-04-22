@@ -2,9 +2,9 @@
 {
     public static class Project
     {
-        public static IProject Open(string path)
+        public static IProject Open(string pathToProjectFile)
         {
-            return ProjectHandler.Open(path);
+            return ProjectHandler.Open(pathToProjectFile);
         }
     }
 }

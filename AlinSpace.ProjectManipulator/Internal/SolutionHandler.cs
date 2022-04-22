@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace AlinSpace.ProjectManipulator
@@ -14,7 +16,7 @@ namespace AlinSpace.ProjectManipulator
 
         private SolutionHandler(string pathToSolutionFile)
         {
-            PathToSolutionFile = pathToSolutionFile;
+            PathToSolutionFile = AbsolutePath.Get(pathToSolutionFile);
             Name = Path.GetFileNameWithoutExtension(pathToSolutionFile);
         }
 
@@ -34,10 +36,11 @@ namespace AlinSpace.ProjectManipulator
 
                 if(match.Success)
                 {
-                    var groups = match.Groups;
-
                     var projectName = match.Groups[1].Value;
-                    var pathToProjectFile = match.Groups[2].Value;
+
+                    var pathToProjectFile = Path.Combine(
+                        Path.GetDirectoryName(PathToSolutionFile),
+                        match.Groups[2].Value);
 
                     tempProjects.Add(new ProjectLink(projectName, pathToProjectFile));
                 }

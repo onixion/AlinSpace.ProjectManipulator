@@ -1,7 +1,12 @@
-﻿namespace AlinSpace.ProjectManipulator
+﻿using System;
+using System.Collections.Generic;
+
+namespace AlinSpace.ProjectManipulator
 {
     public interface IProject
     {
+        string PathToProjectFile { get; }
+
         string Name { get; }
 
         ProjectType Type { get; }
