@@ -39,3 +39,18 @@ dependency.Version = new Version(11, 0, 0));
 // Save.
 project.Save();
 ```
+
+## Example - Get projects from a solution file
+
+Note: Solution files can only be read.
+
+```csharp
+// Read solution.
+var solution = Solution.Read("MySolution.sln");
+
+// Access projects.
+var project = solution.Projects.First();
+
+var name = project.Name;
+var path = project.PathToProjectFile;
+```
