@@ -2,9 +2,9 @@
 {
     public static class Solution
     {
-        public static ISolution Open(string pathToFile)
+        public static ISolution Read(string pathToFile)
         {
-            return SolutionHandler.Open(pathToFile);
+            return SolutionHandler.Read(pathToFile);
         }
     }
 }

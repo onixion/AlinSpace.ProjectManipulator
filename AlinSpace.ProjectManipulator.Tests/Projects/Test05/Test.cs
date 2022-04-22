@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Xunit;
 
-namespace AlinSpace.ProjectManipulator.Tests.Test05
+namespace AlinSpace.ProjectManipulator.Projects.Tests.Test05
 {
     /// <summary>
     /// Update dependency.
@@ -12,13 +12,13 @@ namespace AlinSpace.ProjectManipulator.Tests.Test05
         [Fact]
         public void Perform()
         {
-            var project = Project.Open("Test05/Input.txt");
+            var project = Project.Open("Projects/Test05/Input.txt");
             project.AddOrUpdateDependency("AutoMapper", new Version(7, 8, 9));
             project.Save();
 
             Assert.Equal(
-                expected: File.ReadAllText("Test05/Expected.txt"),
-                actual: File.ReadAllText("Test05/Input.txt"));
+                expected: File.ReadAllText("Projects/Test05/Expected.txt"),
+                actual: File.ReadAllText("Projects/Test05/Input.txt"));
         }
     }
 }

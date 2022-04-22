@@ -4,6 +4,6 @@
     {
         string Name { get; }
 
-        string PathToFile { get; }
+        string PathToProjectFile { get; }
     }
 }

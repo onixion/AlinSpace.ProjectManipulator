@@ -4,6 +4,6 @@
     {
         string Name { get; }
 
-        IEnumerable<IProjectLink> GetProjects();
+        IEnumerable<IProjectLink> Projects { get; }
     }
 }

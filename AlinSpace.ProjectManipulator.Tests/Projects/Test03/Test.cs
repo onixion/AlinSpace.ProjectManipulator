@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace AlinSpace.ProjectManipulator.Tests.Test03
+namespace AlinSpace.ProjectManipulator.Projects.Tests.Test03
 {
     /// <summary>
     /// Remove dependency.
@@ -12,14 +12,14 @@ namespace AlinSpace.ProjectManipulator.Tests.Test03
         [Fact]
         public void Perform()
         {
-            var project = Project.Open("Test03/Input.txt");
+            var project = Project.Open("Projects/Test03/Input.txt");
             var dependencies = project.GetDependencies();
             dependencies.First().Remove();
             project.Save();
 
             Assert.Equal(
-                expected: File.ReadAllText("Test03/Expected.txt"),
-                actual: File.ReadAllText("Test03/Input.txt"));
+                expected: File.ReadAllText("Projects/Test03/Expected.txt"),
+                actual: File.ReadAllText("Projects/Test03/Input.txt"));
         }
     }
 }
