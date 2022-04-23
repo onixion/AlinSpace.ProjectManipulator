@@ -1,23 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.10</Version>
+    <Version>1.0.12</Version>
     <Authors>Alin Andersen</Authors>
     <PackageProjectUrl>https://github.com/onixion/AlinSpace.ProjectManipulator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/onixion/AlinSpace.ProjectManipulator</RepositoryUrl>
     <Description>.NET project file manipulator.</Description>
     <Copyright>© 2022 Alin Andersen</Copyright>
+    <PackageIcon>Icon.png</PackageIcon>
+    <RepositoryType>https://github.com/onixion/AlinSpace.ProjectManipulator</RepositoryType>
+    <PackageTags>dotnet; net; project; manipulator; manipulation; projects; solution</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Icon.png">
+    <EmbeddedResource Include="Icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

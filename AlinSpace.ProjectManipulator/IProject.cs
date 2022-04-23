@@ -30,7 +30,37 @@ namespace AlinSpace.ProjectManipulator
         IProject AddOrUpdateDependency(string name, Version version);
 
         IEnumerable<IDependency> GetDependencies();
-        
+
+        #endregion
+
+        #region Authors
+
+        string Authors { get; set; }
+
+        #endregion
+
+        #region Copyright
+
+        string Copyright { get; set; }
+
+        #endregion
+
+        #region PackageProjectUrl
+
+        Uri PackageProjectUrl { get; set; }
+
+        #endregion
+
+        #region RepositoryUrl
+
+        Uri RepositoryUrl { get; set; }
+
+        #endregion
+
+        #region PackageTags
+
+        string PackageTags { get; set; }
+
         #endregion
 
         void Save();

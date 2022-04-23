@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using Xunit;
 
@@ -22,10 +23,6 @@ namespace AlinSpace.ProjectManipulator.Solutions.Tests.Test01
             Assert.Equal(
                 expected: "AlinSpace.ProjectManipulator",
                 actual: project.Name);
-
-            Assert.Equal(
-                expected: "AlinSpace.ProjectManipulator/AlinSpace.ProjectManipulator.csproj",
-                actual: project.PathToProjectFile);
         }
     }
 }

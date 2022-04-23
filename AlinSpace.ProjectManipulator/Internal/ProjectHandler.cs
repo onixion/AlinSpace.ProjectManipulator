@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlinSpace.ProjectManipulator.Internal;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,25 +39,69 @@ namespace AlinSpace.ProjectManipulator
             projectNode = document.SelectSingleNode("/Project");
             propertyGroupNode = projectNode.SelectSingleNode("PropertyGroup");
 
-            #region Version
+            // Version
+            versionHandler = new NodePropertyHandler<Version>(
+                document,
+                propertyGroupNode,
+                "Version",
+                v => Version.Parse(v),
+                v => v.ToString());
 
-            versionNode = propertyGroupNode.SelectSingleNode("Version");
-            if (versionNode != null)
-            {
-                Version = Version.Parse(versionNode.InnerText);
-            }
+            // GeneratePackageOnBuild
+            generatePackageOnBuildHandler = new NodePropertyHandler<bool?>(
+                document,
+                propertyGroupNode,
+                "GeneratePackageOnBuild",
+                v => Convert.ToBoolean(v),
+                v => v.GetValueOrDefault() ? "true" : "false");
 
-            #endregion
+            // Authors
+            authorsHandler = new NodePropertyHandler<string>(
+                document,
+                propertyGroupNode,
+                "Authors",
+                v => v,
+                v => v);
 
-            #region GeneratePackageOnBuild
+            // Copyright
+            copyrightHandler = new NodePropertyHandler<string>(
+                document,
+                propertyGroupNode,
+                "Copyright",
+                v => v,
+                v => v);
 
-            generatePackageOnBuildNode = propertyGroupNode.SelectSingleNode("GeneratePackageOnBuild");
-            if (generatePackageOnBuildNode != null)
-            {
-                GeneratePackageOnBuild = Convert.ToBoolean(generatePackageOnBuildNode.InnerText);
-            }
+            // PackageProjectUrl
+            packageProjectUrlHandler = new NodePropertyHandler<Uri>(
+                document,
+                propertyGroupNode,
+                "PackageProjectUrl",
+                v => new Uri(v),
+                v => v.ToString());
 
-            #endregion
+            // PackageProjectUrl
+            packageProjectUrlHandler = new NodePropertyHandler<Uri>(
+                document,
+                propertyGroupNode,
+                "PackageProjectUrl",
+                v => new Uri(v),
+                v => v.ToString());
+
+            // RepositoryUrl
+            repositoryUrlHandler = new NodePropertyHandler<Uri>(
+                document,
+                propertyGroupNode,
+                "RepositoryUrl",
+                v => new Uri(v),
+                v => v.ToString());
+
+            // PackageTags
+            packageTagsHandler = new NodePropertyHandler<string>(
+                document,
+                propertyGroupNode,
+                "PackageTags",
+                v => v,
+                v => v);
         }
 
         public string PathToProjectFile { get; private set; }
@@ -65,73 +110,15 @@ namespace AlinSpace.ProjectManipulator
 
         public ProjectType Type { get; private set; }
 
-        public bool? GeneratePackageOnBuild
-        {
-            get => generatePackageOnBuild;
-            set
-            {
-                if (value == null)
-                {
-                    var node = propertyGroupNode
-                        .GetNodes()
-                        .FirstOrDefault(x => x.Name == "GeneratePackageOnBuild");
-
-                    if (node != null)
-                    {
-                        propertyGroupNode.RemoveChild(node);
-                    }
-
-                    return;
-                }
-                else
-                {
-                    if (generatePackageOnBuildNode == null)
-                    {
-                        generatePackageOnBuildNode = document.CreateElement("GeneratePackageOnBuild");
-                        propertyGroupNode.AppendChild(generatePackageOnBuildNode);
-                    }
-
-                    generatePackageOnBuildNode.InnerText = value.Value ? "true" : "false";
-                    generatePackageOnBuild = value.Value;
-                }
-            }
-        }
-        bool generatePackageOnBuild;
-
         #region Version
+
+        private NodePropertyHandler<Version> versionHandler;
 
         public Version Version
         {
-            get => version;
-            set
-            {
-                if (value == null)
-                {
-                    var node = propertyGroupNode
-                        .GetNodes()
-                        .FirstOrDefault(x => x.Name == "Version");
-
-                    if (node != null)
-                    {
-                        propertyGroupNode.RemoveChild(node);
-                    }
-
-                    return;
-                }
-                else
-                {
-                    if (versionNode == null)
-                    {
-                        versionNode = document.CreateElement("Version");
-                        propertyGroupNode.AppendChild(versionNode);
-                    }
-
-                    versionNode.InnerText = value?.ToString();
-                    version = value;
-                }
-            }
+            get => versionHandler.GetValue();
+            set => versionHandler.SetValue(value);
         }
-        private Version version;
 
         void CheckSetVersion()
         {
@@ -150,8 +137,6 @@ namespace AlinSpace.ProjectManipulator
                 Version.Minor,
                 Version.Build);
 
-            WriteVersion();
-
             return this;
         }
 
@@ -164,8 +149,6 @@ namespace AlinSpace.ProjectManipulator
                 Version.Minor + 1,
                 Version.Build);
 
-            WriteVersion();
-
             return this;
         }
 
@@ -177,21 +160,20 @@ namespace AlinSpace.ProjectManipulator
                 Version.Major,
                 Version.Minor,
                 Version.Build + 1);
-
-            WriteVersion();
             
             return this;
         }
 
-        void WriteVersion()
-        {
-            if (versionNode == null)
-            {
-                versionNode = document.CreateElement("Version");
-                propertyGroupNode.AppendChild(versionNode);
-            }
+        #endregion
 
-            versionNode.InnerText = Version.ToString();
+        #region GeneratePackageOnBuild
+
+        private NodePropertyHandler<bool?> generatePackageOnBuildHandler;
+
+        public bool? GeneratePackageOnBuild
+        {
+            get => generatePackageOnBuildHandler.GetValue();
+            set => generatePackageOnBuildHandler.SetValue(value);
         }
 
         #endregion
@@ -272,6 +254,66 @@ namespace AlinSpace.ProjectManipulator
             }
 
             return this;
+        }
+
+        #endregion
+
+        #region Authors
+
+        private NodePropertyHandler<string> authorsHandler;
+
+        public string Authors
+        {
+            get => authorsHandler.GetValue();
+            set => authorsHandler.SetValue(value);
+        }
+
+        #endregion
+
+        #region Copyright
+
+        private NodePropertyHandler<string> copyrightHandler;
+
+        public string Copyright
+        {
+            get => copyrightHandler.GetValue();
+            set => copyrightHandler.SetValue(value);
+        }
+
+        #endregion
+
+        #region PackageProjectUrl
+
+        private NodePropertyHandler<Uri> packageProjectUrlHandler;
+
+        public Uri PackageProjectUrl
+        {
+            get => packageProjectUrlHandler.GetValue();
+            set => packageProjectUrlHandler.SetValue(value);
+        }
+
+        #endregion
+
+        #region RepositoryUrl
+
+        private NodePropertyHandler<Uri> repositoryUrlHandler;
+
+        public Uri RepositoryUrl
+        {
+            get => repositoryUrlHandler.GetValue();
+            set => repositoryUrlHandler.SetValue(value);
+        }
+
+        #endregion
+
+        #region PackageTags
+
+        private NodePropertyHandler<string> packageTagsHandler;
+
+        public string PackageTags
+        {
+            get => packageTagsHandler.GetValue();
+            set => packageTagsHandler.SetValue(value);
         }
 
         #endregion
