@@ -3,7 +3,7 @@
 # AlinSpace.ProjectManipulator
 .NET project file manipulator.
 
-[Nuget](https://www.nuget.org/packages/AlinSpace.ProjectManipulator/1.0.2)
+[Nuget](https://www.nuget.org/packages/AlinSpace.ProjectManipulator)
 
 ## Why?
 
