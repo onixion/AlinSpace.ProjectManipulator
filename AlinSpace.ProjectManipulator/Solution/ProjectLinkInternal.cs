@@ -1,12 +1,15 @@
 ﻿namespace AlinSpace.ProjectManipulator
 {
-    public class ProjectLink : IProjectLink
+    /// <summary>
+    /// Represents the implementation of <see cref="IProjectLink"/>.
+    /// </summary>
+    internal class ProjectLinkInternal : IProjectLink
     {
         public string Name { get; }
 
         public string PathToProjectFile { get; }
 
-        public ProjectLink(
+        public ProjectLinkInternal(
             string name,
             string pathToProjectFile)
         {

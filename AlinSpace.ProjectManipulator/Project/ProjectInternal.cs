@@ -7,7 +7,10 @@ using System.Xml;
 
 namespace AlinSpace.ProjectManipulator
 {
-    internal class ProjectHandler : IProject
+    /// <summary>
+    /// Represents the implementation for <see cref="IProject"/>.
+    /// </summary>
+    internal class ProjectInternal : IProject
     {
         private XmlDocument document;
 
@@ -17,7 +20,7 @@ namespace AlinSpace.ProjectManipulator
         private XmlNode versionNode;
         private XmlNode generatePackageOnBuildNode;
 
-        public ProjectHandler(string pathToProjectFile)
+        public ProjectInternal(string pathToProjectFile)
         {
             PathToProjectFile = AbsolutePath.Get(pathToProjectFile);
             Name = Path.GetFileNameWithoutExtension(pathToProjectFile);
@@ -26,7 +29,7 @@ namespace AlinSpace.ProjectManipulator
 
         public static IProject Open(string pathToProjectFile)
         {
-            var project = new ProjectHandler(pathToProjectFile);
+            var project = new ProjectInternal(pathToProjectFile);
             project.Init();
 
             return project;
@@ -233,7 +236,7 @@ namespace AlinSpace.ProjectManipulator
             {
                 foreach(var packageReferenceNode in itemGroupNode.GetNodes("PackageReference"))
                 {
-                    yield return new DependencyHandler(itemGroupNode, packageReferenceNode);
+                    yield return new DependencyInternal(itemGroupNode, packageReferenceNode);
                 }
             }
         }

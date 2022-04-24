@@ -5,7 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace AlinSpace.ProjectManipulator
 {
-    internal class SolutionHandler : ISolution
+    /// <summary>
+    /// Represents the implementation of <see cref="ISolution"/>.
+    /// </summary>
+    internal class SolutionInternal : ISolution
     {
         public string PathToSolutionFile { get; }
 
@@ -14,7 +17,7 @@ namespace AlinSpace.ProjectManipulator
         public IEnumerable<IProjectLink> Projects => projects;
         private ReadOnlyCollection<IProjectLink> projects;
 
-        private SolutionHandler(string pathToSolutionFile)
+        private SolutionInternal(string pathToSolutionFile)
         {
             PathToSolutionFile = AbsolutePath.Get(pathToSolutionFile);
             Name = Path.GetFileNameWithoutExtension(pathToSolutionFile);
@@ -42,7 +45,7 @@ namespace AlinSpace.ProjectManipulator
                         Path.GetDirectoryName(PathToSolutionFile),
                         match.Groups[2].Value);
 
-                    tempProjects.Add(new ProjectLink(projectName, pathToProjectFile));
+                    tempProjects.Add(new ProjectLinkInternal(projectName, pathToProjectFile));
                 }
             }
 
@@ -51,7 +54,7 @@ namespace AlinSpace.ProjectManipulator
 
         public static ISolution Read(string pathToFile)
         {
-            var solution = new SolutionHandler(pathToFile);
+            var solution = new SolutionInternal(pathToFile);
             solution.Init();
 
             return solution;

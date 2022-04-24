@@ -5,7 +5,7 @@ using Xunit;
 namespace AlinSpace.ProjectManipulator.Projects.Tests.Test01
 {
     /// <summary>
-    /// Sets version.
+    /// Sets version of project.
     /// </summary>
     public class Test
     {

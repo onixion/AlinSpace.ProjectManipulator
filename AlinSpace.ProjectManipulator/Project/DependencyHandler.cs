@@ -4,7 +4,10 @@ using System.Xml;
 
 namespace AlinSpace.ProjectManipulator
 {
-    internal class DependencyHandler : IDependency
+    /// <summary>
+    /// Represents the implementation of <see cref="IDependency"/>.
+    /// </summary>
+    internal class DependencyInternal : IDependency
     {
         private readonly XmlNode parentNode;
         private readonly XmlNode dependencyNode;
@@ -13,7 +16,7 @@ namespace AlinSpace.ProjectManipulator
 
         private bool removed;
 
-        public DependencyHandler(
+        public DependencyInternal(
             XmlNode parentNode,
             XmlNode dependencyNode)
         {

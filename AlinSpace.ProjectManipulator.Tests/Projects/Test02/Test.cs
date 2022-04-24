@@ -6,7 +6,7 @@ using Xunit;
 namespace AlinSpace.ProjectManipulator.Projects.Tests.Test02
 {
     /// <summary>
-    /// Sets version of dependency.
+    /// Sets version of dependency in project.
     /// </summary>
     public class Test
     {

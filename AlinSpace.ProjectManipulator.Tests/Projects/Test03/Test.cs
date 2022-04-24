@@ -5,7 +5,7 @@ using Xunit;
 namespace AlinSpace.ProjectManipulator.Projects.Tests.Test03
 {
     /// <summary>
-    /// Remove dependency.
+    /// Remove dependency from project.
     /// </summary>
     public class Test
     {

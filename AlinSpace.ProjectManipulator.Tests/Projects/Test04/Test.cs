@@ -5,7 +5,7 @@ using Xunit;
 namespace AlinSpace.ProjectManipulator.Projects.Tests.Test04
 {
     /// <summary>
-    /// Add dependency.
+    /// Add dependency to project.
     /// </summary>
     public class Test
     {

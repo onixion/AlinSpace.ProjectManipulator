@@ -3,8 +3,16 @@ using System.Xml;
 
 namespace AlinSpace.ProjectManipulator
 {
+    /// <summary>
+    /// Represents the extensions for <see cref="XmlNode"/>.
+    /// </summary>
     public static class XmlNodeExtensions
     {
+        /// <summary>
+        /// Get the nodes.
+        /// </summary>
+        /// <param name="node">Node to retrieve nodes from.</param>
+        /// <returns>Enumerable of nodes.</returns>
         public static IEnumerable<XmlNode> GetNodes(
            this XmlNode node)
         {
@@ -19,6 +27,12 @@ namespace AlinSpace.ProjectManipulator
             }
         }
 
+        /// <summary>
+        /// Get the nodes.
+        /// </summary>
+        /// <param name="node">Node to retrieve nodes from.</param>
+        /// <param name="xpath">X Path.</param>
+        /// <returns>Enumerable of nodes.</returns>
         public static IEnumerable<XmlNode> GetNodes(
             this XmlNode node, 
             string xpath)
@@ -34,6 +48,11 @@ namespace AlinSpace.ProjectManipulator
             }
         }
 
+        /// <summary>
+        /// Get attributes.
+        /// </summary>
+        /// <param name="node">Node to retrieve the attributes.</param>
+        /// <returns>Enumerable attribute.</returns>
         public static IEnumerable<XmlAttribute> GetAttributes(
             this XmlNode node)
         {
